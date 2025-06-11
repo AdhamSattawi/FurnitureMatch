@@ -4,7 +4,7 @@
 
 ## 🛠 Tech Stack
 
-- **Frontend**: React Native 
+- **Frontend**: React 
 - **Backend**: Python FastAPI  
 - **Database**: SQLite  
 - **Image Processing**: OpenCV, YOLO  
