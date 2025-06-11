@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FurnitureMatch - Upload</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+    input[type="file"] {
+      margin-bottom: 20px;
+    }
+    #results {
+      margin-top: 30px;
+    }
+    img.preview {
+      max-width: 100%;
+      height: auto;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>FurnitureMatch - Upload Image</h2>
+  <form id="upload-form">
+    <input type="file" id="image" name="file" accept="image/*" required>
+    <br>
+    <button type="submit">Find Matches</button>
+  </form>
+  <img id="preview" class="preview" style="display:none">
+  <div id="results"></div>
+
+  <script>
+    const form = document.getElementById("upload-form");
+    const imageInput = document.getElementById("image");
+    const resultsDiv = document.getElementById("results");
+    const preview = document.getElementById("preview");
+
+    imageInput.addEventListener("change", () => {
+      const file = imageInput.files[0];
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = 'block';
+      }
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const file = imageInput.files[0];
+      const formData = new FormData();
+      formData.append("file", file);
+
+      resultsDiv.innerHTML = "<p>Loading...</p>";
+
+      try {
+        const res = await fetch("http://127.0.0.1:8000/match", {
+          method: "POST",
+          body: formData
+        });
+        const data = await res.json();
+
+        resultsDiv.innerHTML = "";
+        if (data.status === "success") {
+          data.results.forEach(result => {
+            const group = document.createElement("div");
+            group.innerHTML = `<h4>${result.label}</h4>`;
+            result.matches.forEach(match => {
+              const img = document.createElement("img");
+              img.src = match.image_path;
+              img.style.maxWidth = "100px";
+              img.style.margin = "5px";
+              group.appendChild(img);
+            });
+            resultsDiv.appendChild(group);
+          });
+        } else {
+          resultsDiv.innerHTML = `<p>${data.status}</p>`;
+        }
+      } catch (err) {
+        console.error(err);
+        resultsDiv.innerHTML = "<p>Error uploading image or fetching results.</p>";
+      }
+    });
+  </script>
+</body>
+</html>
