@@ -1,3 +1,7 @@
 ai_ml/yolo11n.pt
 .env
 .idx
+backend/app/__pycache__/main.cpython-313.pyc
+backend/app/api/__pycache__/routes.cpython-313.pyc
+*.pyc
+yolo11n.pt
