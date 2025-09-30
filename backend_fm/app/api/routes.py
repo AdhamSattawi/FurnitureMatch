@@ -1,11 +1,18 @@
-# File: app/api/routes.py
-
+﻿# File: backend_fm/app/api/routes.py
 from fastapi import APIRouter, UploadFile, File
-from backend_fm.app.services.matcher import process_image_and_search
+from fastapi.responses import JSONResponse
+from backend_fm.app.services.matcher import match_image  # השם בפועל אצלך
 
 router = APIRouter()
 
 @router.post("/match")
 async def match_furniture(file: UploadFile = File(...)):
-    result = await process_image_and_search(file)
-    return result
+    print(f"[/match] received: {getattr(file, 'filename', '?')}", flush=True)
+    try:
+        res = await match_image(file)
+        print("[/match] done OK", flush=True)
+        return res
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        print(f"[/match] ERROR: {e}", flush=True)
+        return JSONResponse({"status": "error", "message": str(e)}, status_code=500)
