@@ -1,6 +1,7 @@
 # File: app/main.py
 
 from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from backend_fm.app.api.routes import router
 
@@ -17,3 +18,16 @@ app.add_middleware(
 
 # Include the API router
 app.include_router(router)
+
+
+# Convenience routes
+@app.get("/", include_in_schema=False)
+def root():
+    """Redirect root to interactive docs for easier testing."""
+    return RedirectResponse(url="/docs")
+
+
+@app.get("/health", tags=["system"])
+def health():
+    """Simple liveness probe."""
+    return {"status": "ok"}
