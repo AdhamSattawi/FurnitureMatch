@@ -5,3 +5,4 @@ backend/app/__pycache__/main.cpython-313.pyc
 backend/app/api/__pycache__/routes.cpython-313.pyc
 *.pyc
 yolo11n.pt
+backend_fm/data/.clip/ViT-B-32.pt

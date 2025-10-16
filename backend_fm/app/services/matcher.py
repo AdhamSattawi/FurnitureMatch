@@ -189,8 +189,18 @@ async def match_image(file: UploadFile) -> Dict[str, Any]:
         except Exception:
             detections = []
 
+    # Always include a full-image detection to support exact-image matching
+    full_det = {"label": "full", "conf": 1.0, "box": [0, 0, w, h]}
     if not detections:
-        detections = [{"label": "full", "conf": 1.0, "box": [0, 0, w, h]}]
+        detections = [full_det]
+    else:
+        # Prepend the full-image box if not already present
+        has_full = any(
+            (d.get("label") == "full") or (d.get("box") == [0, 0, w, h])
+            for d in detections
+        )
+        if not has_full:
+            detections.insert(0, full_det)
 
     results: List[Dict[str, Any]] = []
     for det in detections:
@@ -200,7 +210,7 @@ async def match_image(file: UploadFile) -> Dict[str, Any]:
             continue
         pil_img = Image.fromarray(crop_rgb)  # RGB
         vec = _clip_encode_image(pil_img)
-        top = _search_faiss(vec, k=10)
+        top = _search_faiss(vec, k=20)
 
         matches = []
         for m in top:
@@ -222,6 +232,34 @@ async def match_image(file: UploadFile) -> Dict[str, Any]:
                 "meta": meta,
             })
 
+        # pHash re-rank for full-image detection (best effort)
+        try:
+            if det.get("label") == "full" and matches:
+                qh = _phash_pil(pil_img)
+                enriched = []
+                for it in matches:
+                    meta = it.get("meta") or {}
+                    rel = meta.get("local_path") or it.get("image_path")
+                    path = str(rel).replace("\\", "/") if isinstance(rel, str) else None
+                    if path and (not os.path.isabs(path)):
+                        path = os.path.normpath(os.path.join(BACKEND_ROOT, path))
+                    ph = 64
+                    if path and os.path.exists(path):
+                        try:
+                            with Image.open(path) as cim:
+                                hh = _phash_pil(cim.convert("RGB"))
+                            ph = _hamming(qh, hh)
+                        except Exception:
+                            ph = 64
+                    it["_phash"] = ph
+                    enriched.append(it)
+                enriched.sort(key=lambda x: (x.get("_phash", 64), -float(x.get("score", 0.0))))
+                for it in enriched:
+                    it.pop("_phash", None)
+                matches = enriched
+        except Exception:
+            pass
+
         results.append({
             "label": det["label"],
             "conf": det["conf"],
@@ -236,3 +274,21 @@ async def match_image(file: UploadFile) -> Dict[str, Any]:
         pass
 
     return {"status": "success", "results": results}
+
+# --- pHash helpers ---
+def _phash_pil(pil_img: Image.Image) -> np.ndarray:
+    """Compute a 64-bit perceptual hash as a boolean array (length 64)."""
+    im = pil_img.convert("L").resize((32, 32), Image.BICUBIC)
+    arr = np.asarray(im, dtype=np.float32)
+    dct = cv2.dct(arr)
+    low = dct[:8, :8]
+    flat = low.flatten()
+    dc = flat[0]
+    rest = flat[1:]
+    med = np.median(rest)
+    bits = (flat >= med)
+    bits[0] = True if dc >= med else False
+    return bits.astype(np.bool_)
+
+def _hamming(a: np.ndarray, b: np.ndarray) -> int:
+    return int(np.count_nonzero(a != b))

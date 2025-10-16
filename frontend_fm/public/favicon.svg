@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="FurnitureMatch icon">
+  <defs>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"/>
+      <feOffset dy="1" result="off"/>
+      <feMerge>
+        <feMergeNode in="off"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Soft rounded background to echo the sample -->
+  <rect x="12" y="12" width="232" height="232" rx="28" fill="#FFD6DE"/>
+
+  <!-- Foreground color (rose) -->
+  <g fill="#E98397" filter="url(#soft)">
+    <!-- Chair seat -->
+    <rect x="58" y="128" width="84" height="26" rx="8"/>
+    <!-- Chair legs -->
+    <rect x="62" y="154" width="12" height="60" rx="6"/>
+    <rect x="120" y="154" width="12" height="60" rx="6"/>
+    <!-- Chair back posts -->
+    <rect x="58" y="60" width="16" height="68" rx="8"/>
+    <rect x="126" y="60" width="16" height="68" rx="8"/>
+    <!-- Top rail with slight overhang -->
+    <rect x="50" y="52" width="100" height="14" rx="7"/>
+    <!-- Backrest cross (X) -->
+    <path d="M62 70 L132 130 M132 70 L62 130" stroke="#E98397" stroke-width="12" stroke-linecap="round"/>
+
+    <!-- Magnifying glass over seat -->
+    <g transform="translate(112,120) rotate(12)">
+      <circle cx="48" cy="48" r="38" fill="none" stroke="#E98397" stroke-width="14"/>
+      <rect x="78" y="78" width="18" height="44" rx="9" transform="rotate(45 87 100)"/>
+      <!-- Simple highlight numeral-like shard inside the lens -->
+      <path d="M48 26 q-10 18 -8 36 q1 10 6 18" stroke="#E98397" stroke-width="10" stroke-linecap="round" fill="none"/>
+    </g>
+  </g>
+</svg>
+
