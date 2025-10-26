@@ -5,13 +5,17 @@
 # 🔎 Instructions to run the application:
 
 First terminal:
+
 python -m uvicorn backend_fm.app.main:app --reload --port 8000
 
 And then enter: 
+
 http://localhost:8000/docs
 
 Second terminal:
+
 cd frontend_fm
+
 npm run dev
 
 ## 🛠 Tech Stack
