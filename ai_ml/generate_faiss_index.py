@@ -55,4 +55,3 @@ if image_vectors:
     print(f"Total vectors: {len(image_vectors)}")
 else:
     print("⚠️ No images found to process.")
-# === END OF CONFIGURATION ===

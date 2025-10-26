@@ -72,7 +72,7 @@ for index, img_url in enumerate(image_urls):
         img = Image.open(BytesIO(img_data))
         
         # שינוי גודל התמונה
-        img = img.resize((800, 800))  # לדוגמה 800x800 פיקסלים
+        img = img.resize((800, 800))  
         
         # שמירת התמונה
         img.save(f"images/image_{index}.jpg")

@@ -17,9 +17,8 @@ import faiss
 import clip
 
 
-# ─────────────────────────────
+
 # נתיבי בסיס
-# ─────────────────────────────
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DATA_DIR = os.path.join(ROOT, "data")
 DB_PATH = os.path.join(DATA_DIR, "products.db")
@@ -31,9 +30,7 @@ META_JSON = os.path.join(DATA_DIR, "metadata.json")    # מטאדטה לכל ו�
 
 os.makedirs(IMAGES_DIR, exist_ok=True)
 
-# ─────────────────────────────
 # CLIP
-# ─────────────────────────────
 device = "cuda" if torch.cuda.is_available() else "cpu"
 clip_model, preprocess = clip.load("ViT-B/32", device=device)
 

@@ -13,9 +13,7 @@ import torch
 from PIL import Image, UnidentifiedImageError
 from fastapi import UploadFile
 
-# ──────────────────────────────────────────────────────────────────────────────
 # נתיבי קבצים
-# ──────────────────────────────────────────────────────────────────────────────
 HERE = os.path.dirname(os.path.abspath(__file__))
 BACKEND_ROOT = os.path.normpath(os.path.join(HERE, "..", ".."))
 DATA_DIR = os.path.join(BACKEND_ROOT, "data")
@@ -24,9 +22,8 @@ FAISS_INDEX_PATH = os.path.join(DATA_DIR, "faiss_index.bin")
 IMG_PATHS_TXT   = os.path.join(DATA_DIR, "image_paths.txt")
 META_JSON       = os.path.join(DATA_DIR, "metadata.json")
 
-# ──────────────────────────────────────────────────────────────────────────────
 # מודלים: CLIP + YOLO (אופציונלי)
-# ──────────────────────────────────────────────────────────────────────────────
+
 torch.set_num_threads(4)  # צמצום עומס CPU במכונות חלשות
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -61,9 +58,8 @@ TARGET_CLASSES = {
     "cabinet", "desk", "dresser", "armchair"
 }
 
-# ──────────────────────────────────────────────────────────────────────────────
 # טעינת FAISS + מטא־דאטה
-# ──────────────────────────────────────────────────────────────────────────────
+
 def _load_faiss_and_metadata():
     index = faiss.read_index(FAISS_INDEX_PATH) if os.path.exists(FAISS_INDEX_PATH) else None
 
@@ -81,9 +77,7 @@ def _load_faiss_and_metadata():
 
 FAISS_INDEX, FAISS_IMAGE_PATHS, FAISS_METADATA = _load_faiss_and_metadata()
 
-# ──────────────────────────────────────────────────────────────────────────────
 # עזר
-# ──────────────────────────────────────────────────────────────────────────────
 def _pil_from_cv2(ar_bgr: np.ndarray) -> Image.Image:
     """המרת BGR (OpenCV) ל-PIL RGB."""
     return Image.fromarray(cv2.cvtColor(ar_bgr, cv2.COLOR_BGR2RGB))
@@ -127,9 +121,8 @@ def _search_faiss(vec: np.ndarray, k: int = 10) -> List[Dict[str, Any]]:
         })
     return out
 
-# ──────────────────────────────────────────────────────────────────────────────
 # API logic
-# ──────────────────────────────────────────────────────────────────────────────
+
 async def match_image(file: UploadFile) -> Dict[str, Any]:
     """
     מקבל תמונה, מבצע:

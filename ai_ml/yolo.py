@@ -9,7 +9,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 model_yolo = YOLO("yolo11n.pt")
 model_clip, preprocess = clip.load("ViT-B/32", device=device)
 
-# Path to test image (you can change this)
+# Path to test image 
 image_path = r"C:\Users\fried\Downloads\data\data\images\table\wood table\image_89.jpg"
 image = cv2.imread(image_path)
 
