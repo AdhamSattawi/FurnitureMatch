@@ -2,6 +2,22 @@
 
 **FurnitureMatch** is a visual search app where users upload a photo of a furniture item, and the system returns the top 5 most visually similar purchasable items scraped from Pinterest. It combines machine learning, computer vision, and fast similarity search to deliver accurate, aesthetic matches.
 
+# 🔎 Instructions to run the application:
+
+First terminal:
+
+python -m uvicorn backend_fm.app.main:app --reload --port 8000
+
+And then enter: 
+
+http://localhost:8000/docs
+
+Second terminal:
+
+cd frontend_fm
+
+npm run dev
+
 ## 🛠 Tech Stack
 
 - **Frontend**: React 
