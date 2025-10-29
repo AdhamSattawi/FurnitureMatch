@@ -12,9 +12,3 @@ backend_fm/app/__pycache__/__init__.cpython-313.pyc
 backend_fm/app/__pycache__/main.cpython-313.pyc
 backend_fm/app/api/__pycache__/__init__.cpython-313.pyc
 backend_fm/app/api/__pycache__/routes.cpython-313.pyc
-backend_fm/__pycache__/__init__.cpython-313.pyc
-backend_fm/app/__pycache__/__init__.cpython-313.pyc
-backend_fm/app/__pycache__/main.cpython-313.pyc
-backend_fm/app/api/__pycache__/__init__.cpython-313.pyc
-backend_fm/app/api/__pycache__/routes.cpython-313.pyc
-backend_fm/app/services/__pycache__/matcher.cpython-313.pyc
