@@ -46,13 +46,13 @@ npm run dev
 5. **Indexing**: Store embeddings in a FAISS index for fast lookup  
 6. **Search**: On user upload, embed the input and search FAISS for nearest neighbors  
 
-## 📦 Installation
+## AI Assistance
 
-
-## 🧪 Example
-
-
-## 🛤 Future Enhancements
+Portions of this project were developed with the assistance of  ChatGPT. These AI tool were used for:
+- planning project.
+- Generating boilerplate code.
+- Assisting with debugging and refactoring specific functions.
+- Helping to write documentation and comments
 
 
 
