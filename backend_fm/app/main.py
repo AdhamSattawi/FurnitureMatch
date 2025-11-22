@@ -1,5 +1,6 @@
 # File: app/main.py
-
+import os
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
