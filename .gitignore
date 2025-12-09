@@ -12,6 +12,7 @@ backend_fm/app/__pycache__/
 backend_fm/app/api/__pycache__/
 
 __pycache__/
+__init__.pyc
 *.pyc
 backend_fm/__pycache__/__init__.cpython-313.pyc
 backend_fm/app/__pycache__/__init__.cpython-313.pyc
